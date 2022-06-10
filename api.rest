@@ -1,0 +1,28 @@
+GET http://localhost:3000/posts 
+Content-Type: application/json
+
+### 
+POST http://localhost:3000/posts 
+Content-Type: application/json
+
+{
+    "title":"my first title",
+    "body":"my first body"
+}
+
+### 
+GET http://localhost:3000/posts/62a33126489746924f2ecafe
+Content-Type: application/json
+
+### 
+DELETE  http://localhost:3000/posts/62a3311d489746924f2ecafc
+Content-Type: application/json
+
+### 
+PATCH http://localhost:3000/posts/62a33126489746924f2ecafe
+Content-Type: application/json
+
+{
+    "title":"TEST title",
+    "body":"TEST body"
+}

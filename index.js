@@ -29,13 +29,10 @@ const connectWithRetry = () => {
 
 connectWithRetry();
 
-// Home endpoint
-app.get("/", (req, res) => {
-  res.send(`
-        <h1>
-            Listening on port ${port} !!
-        </h1>
-    `);
-});
+app.use(express.json());
+
+// Router
+// Post Route
+app.use("/posts", require("./routes/post.route"));
 
 app.listen(port, () => console.log(`Listening on port ${port}`));
