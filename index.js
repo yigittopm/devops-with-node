@@ -5,7 +5,20 @@ const {
   MONGO_PASSWORD,
   MONGO_IP,
   MONGO_PORT,
+  SESSION_SECRET,
+  REDIS_URL,
+  REDIS_PORT,
 } = require("./config/config");
+
+// REDIS Config
+const redis = require("redis");
+const session = require("express-session");
+let redisStore = require("connect-redis")(session);
+let redisClient = redis.createClient({
+  host: REDIS_URL,
+  port: REDIS_PORT,
+});
+
 const app = express();
 const port = process.env.PORT || 3000;
 
@@ -30,6 +43,19 @@ const connectWithRetry = () => {
 connectWithRetry();
 
 app.use(express.json());
+app.use(
+  session({
+    store: new redisStore({ client: redisClient }),
+    secret: SESSION_SECRET,
+    cookie: {
+      secure: false,
+      resave: false,
+      saveUninitialized: false,
+      httpOnly: true,
+      maxAge: 30000,
+    },
+  })
+);
 
 // Router
 // Post Route
