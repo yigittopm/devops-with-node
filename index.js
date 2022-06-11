@@ -34,5 +34,6 @@ app.use(express.json());
 // Router
 // Post Route
 app.use("/posts", require("./routes/post.route"));
+app.use("/users", require("./routes/user.route"));
 
 app.listen(port, () => console.log(`Listening on port ${port}`));
