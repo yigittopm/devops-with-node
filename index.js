@@ -11,14 +11,14 @@ const {
 } = require("./config/config");
 
 // REDIS Config
-const redis = require("redis");
 const session = require("express-session");
-let redisStore = require("connect-redis")(session);
-let redisClient = redis.createClient({
+const redis = require("redis");
+const redisStore = require("connect-redis")(session);
+const redisClient = new redis.createClient({
   host: REDIS_URL,
   port: REDIS_PORT,
 });
-
+redisClient.connect();
 const app = express();
 const port = process.env.PORT || 3000;
 
@@ -45,12 +45,14 @@ connectWithRetry();
 app.use(express.json());
 app.use(
   session({
-    store: new redisStore({ client: redisClient }),
     secret: SESSION_SECRET,
+    store: new redisStore({ client: redisClient }),
+    resave: true,
+    saveUninitialized: true,
     cookie: {
-      secure: false,
       resave: false,
       saveUninitialized: false,
+      secure: false,
       httpOnly: true,
       maxAge: 30000,
     },
